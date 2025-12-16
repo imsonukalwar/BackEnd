@@ -60,7 +60,7 @@ app.delete("/admine/:id", (req, res) => {
     res.send("intem not exixst in menue");
     } else {
     foodItem.splice(del, 1);
-    res.send("delete successfull");}
+    res.status(201).send("delete successfull");}
 });
 
 app.put("/admin",(req,res)=>{
@@ -70,7 +70,35 @@ app.put("/admin",(req,res)=>{
         del.menue=req.body.menue;
         del.prise=req.body.prise;
     }
-    res.send("update succesfully")
+    res.status(201).send("update succesfully")
+});
+
+//now  its turn to user
+app.post("/user/:id",(req,res)=>{
+    const id=parseInt(req.params.id);
+    const finditem=foodItem.find(info=>info.id===id)
+    if(finditem){
+        userCart.push(finditem);
+        res.status(201).send("adding item succesfull");
+    }else{
+        res.send("Item is NOT added");
+    }
+});
+
+
+app.delete("/user/:id",(req,res)=>{
+    const id=parseInt(req.params.id);
+    const del=userCart.findIndex(info=>info.id===id)
+    if(del!=-1){
+        userCart.splice(del,1);
+        res.status(201).send("item DELETED succesfull");
+    }else{
+        res.send("Item is NOT present into the cart");
+    }
+});
+
+app.get("/user",(req,res)=>{
+    res.status(201).send(userCart);
 });
 
 app.listen(port, () => {
