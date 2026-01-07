@@ -73,6 +73,7 @@ userroute.post("/logout3",userOuth,async(req,res)=>{
         //this line state i will expire the token after at the fixed time
         // await radisclient.expire(`token:${token}`,1000)
         //“Redis ko bolo ki token:<token> wali key ko payload.exp ke time par automatically delete kar dena.”
+        //🧹 Redis ko bolo ki jab JWT token expire ho, usi time ye token Redis se bhi delete ho jaye
         await radisclient.expireAt(`token:${token}`,payload.exp)//this line expire token from cretion time to expires time
         //“Browser me jo token naam ki cookie hai, usse abhi ke abhi expire kar do (delete kar do).”
         res.cookie("token",null,{expires:new Date(Date.now())});
